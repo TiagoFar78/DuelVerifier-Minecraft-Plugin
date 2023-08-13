@@ -16,8 +16,10 @@ public class DuelVerifierCommand implements CommandExecutor {
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command label, String cmd, String[] args) {
+		ConfigManager configManager = ConfigManager.getInstance();
+		
 		if (args.length != 1) {
-			// TODO usage
+			sender.sendMessage(configManager.getGeneralUsageMessage().toArray(String[]::new));
 			return false;
 		}
 		
@@ -25,19 +27,24 @@ public class DuelVerifierCommand implements CommandExecutor {
 		
 		if (subcommand.equalsIgnoreCase(RELOAD_COMMAND)) {
 			if (!sender.hasPermission(DuelVerifier.RELOAD_PERMISSION)) {
-				// TODO not allowed
+				sender.sendMessage(configManager.getNotAllowedMessage());
 				return false;
 			}
 			
 			ConfigManager.reload();
-			// TODO reloaded successfully
+			sender.sendMessage(configManager.getConfigReloadedMessage());
 			
+			return false;
+		}
+		
+		if (!sender.hasPermission(DuelVerifier.START_DUEL_PERMISSION)) {
+			sender.sendMessage(configManager.getNotAllowedMessage());
 			return false;
 		}
 		
 		Player targetPlayer = Bukkit.getPlayer(subcommand);
 		if (targetPlayer == null || !targetPlayer.isOnline()) {
-			// TODO not online
+			sender.sendMessage(configManager.getPlayerOfflineMessage());
 			return false;
 		}
 		
