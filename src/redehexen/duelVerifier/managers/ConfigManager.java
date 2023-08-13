@@ -32,7 +32,7 @@ public class ConfigManager {
 	private String _playerOfflineMessage;
 	private String _differentInventoriesMessage;
 	
-	private List<String> _generalUsageMessage;
+	private String[] _generalUsageMessage;
 	
 	
 	private ConfigManager() {
@@ -51,8 +51,9 @@ public class ConfigManager {
 		_playerOfflineMessage = config.getString("Messages.Errors.PlayerOffline").replace("&", "§");
 		_differentInventoriesMessage = config.getString("Messages.Errors.DifferentInventories").replace("&", "§");
 		
-		_generalUsageMessage = config.getStringList("Messages.Usages.GeneralUsage").stream()
+		List<String> generalUsageMessageInConfig = config.getStringList("Messages.Usages.GeneralUsage").stream()
 				.map(line -> line.replace("&", "§")).collect(Collectors.toList());
+		_generalUsageMessage = generalUsageMessageInConfig.toArray(new String[generalUsageMessageInConfig.size()]);
 	}
 		
 	
@@ -92,7 +93,7 @@ public class ConfigManager {
         return _differentInventoriesMessage;
     }
 
-    public List<String> getGeneralUsageMessage() {
+    public String[] getGeneralUsageMessage() {
         return _generalUsageMessage;
     }
 

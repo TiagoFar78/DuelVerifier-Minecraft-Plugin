@@ -19,7 +19,7 @@ public class DuelVerifierCommand implements CommandExecutor {
 		ConfigManager configManager = ConfigManager.getInstance();
 		
 		if (args.length != 1) {
-			sender.sendMessage(configManager.getGeneralUsageMessage().toArray(String[]::new));
+			sender.sendMessage(configManager.getGeneralUsageMessage());
 			return false;
 		}
 		

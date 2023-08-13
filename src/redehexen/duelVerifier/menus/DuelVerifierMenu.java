@@ -1,6 +1,6 @@
 package redehexen.duelVerifier.menus;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -13,6 +13,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryView;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
@@ -51,6 +52,7 @@ public class DuelVerifierMenu implements Listener {
 		ItemStack item = new ItemStack(SWORD_MATERIAL);
 		ItemMeta meta = item.getItemMeta();
 		meta.setDisplayName(itemName);
+		meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
 		item.setItemMeta(meta);
 		
 		return item;
@@ -76,14 +78,15 @@ public class DuelVerifierMenu implements Listener {
 		
 		String defaultMenuName = configManager.getDuelVerifierMenuName();
 		
-		Inventory inv = e.getInventory();
+		Inventory inv = e.getClickedInventory();
 		InventoryView view = e.getView();
+		int slot = e.getSlot();
 		
-		if (inv == null) {
+		if (inv == null || slot < 0 || slot > 35) {
 			return;
 		}
 		
-		String invName = inv.getName();
+		String invName = inv.getTitle();
 		if (invName == null || invName != view.getTitle()) {
 			return;
 		}
@@ -92,6 +95,7 @@ public class DuelVerifierMenu implements Listener {
 		if (!isCorrectInventory) {
 			return;
 		}
+		e.setCancelled(true);
 		
 		ItemStack item = inv.getItem(e.getSlot());
 		if (item == null) {
@@ -129,7 +133,7 @@ public class DuelVerifierMenu implements Listener {
 		Inventory playerInventory = player.getInventory();
 		Inventory targetPlayerInventory = targetPlayer.getInventory();
 		
-		List<ItemStack> inventoryContents = Arrays.asList(playerInventory.getContents());
+		List<ItemStack> inventoryContents = buildInventoryContentsList(playerInventory.getContents());
 		
 		for (ItemStack item : targetPlayerInventory.getContents()) {
 			int index = findItemInInventory(inventoryContents, item);
@@ -152,7 +156,8 @@ public class DuelVerifierMenu implements Listener {
 	}
 	
 	private boolean areSameItens(ItemStack item1, ItemStack item2) {		
-		return (item1 == null && item2 == null) || (item1.getType() == item2.getType() && item1.getAmount() == item2.getAmount() && 
+		return (item1 == null && item2 == null) || (item1 != null && item2 != null && 
+				item1.getType() == item2.getType() && item1.getAmount() == item2.getAmount() && 
 				haveSameEnchantments(item1, item2));
 	}
 	
@@ -171,6 +176,16 @@ public class DuelVerifierMenu implements Listener {
 		}
 		
 		return true;
+	}
+	
+	private List<ItemStack> buildInventoryContentsList(ItemStack[] inventoryContentsArray) {
+		List<ItemStack> inventoryContentsList = new ArrayList<ItemStack>();
+		
+		for (ItemStack item : inventoryContentsArray) {
+			inventoryContentsList.add(item);
+		}
+		
+		return inventoryContentsList;
 	}
 
 }

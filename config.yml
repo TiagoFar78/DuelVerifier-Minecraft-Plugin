@@ -1,6 +1,6 @@
 Menus:
   DuelVerifier:
-    Name: "&8Check oponnet inventory : &e"
+    Name: "&8Oponent : &e"
     Sword:
       Name: "&eStart duel"
     Head:
