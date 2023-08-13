@@ -8,3 +8,15 @@ Menus:
 Commands:
   StartDuel: "x1 desafiar {PLAYER}"
   SeeInventory: "invsee {PLAYER}"
+Messages:
+  Warnings:
+    ConfigReloaded: "&aConfig reloaded successfully"
+  Errors:
+    NotAllowed: "&cNot allowed"
+    PlayerOffline: "&cThat player is offline"
+    DifferentInventories: "&cNot the same inventory"
+  Usages:
+    GeneralUsage: 
+    - "Usage: "
+    - "- /desafiar <name>"
+    - "- /desafiar reload"

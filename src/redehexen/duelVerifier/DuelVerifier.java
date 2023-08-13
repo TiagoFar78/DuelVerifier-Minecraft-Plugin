@@ -7,9 +7,13 @@ import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import redehexen.duelVerifier.commands.DuelVerifierCommand;
 import redehexen.duelVerifier.menus.DuelVerifierMenu;
 
 public class DuelVerifier extends JavaPlugin {
+	
+	public static final String START_DUEL_PERMISSION = "TF_DuelVerifier.StartDuel";
+	public static final String RELOAD_PERMISSION = "TF_DuelVerifier.Reload";
 	
 	@Override
 	public void onEnable() {		
@@ -19,7 +23,7 @@ public class DuelVerifier extends JavaPlugin {
 		
 		getServer().getPluginManager().registerEvents(new DuelVerifierMenu(), this);
 		
-		getCommand("KillOnDisconnect").setExecutor(new KillOnDisconnectCommand());
+		getCommand("KillOnDisconnect").setExecutor(new DuelVerifierCommand());
 	}
 	
 	public static YamlConfiguration getYamlConfiguration() {

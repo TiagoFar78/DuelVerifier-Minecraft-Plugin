@@ -1,8 +1,12 @@
 package redehexen.duelVerifier.menus;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.entity.HumanEntity;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -94,24 +98,79 @@ public class DuelVerifierMenu implements Listener {
 			return;
 		}
 		
+		Player player = (Player) e.getWhoClicked();
 		String targetPlayerName = invName.substring(defaultMenuName.length());
+		Player targetPlayer = Bukkit.getPlayer(targetPlayerName);
 		
 		Material type = item.getType();
 		if (type == SWORD_MATERIAL) {
+			if (!areInventoriesEqual(player, targetPlayer)) {
+				player.sendMessage(configManager.getDifferentInventoriesMessage());
+				return;
+			}
+			
 			String command = configManager.getStartDuelCommand();
-			executeCommand(e.getWhoClicked(), command, targetPlayerName);
+			executeCommand(player, command, targetPlayerName);
 			return;
 		}
 		
 		if (type == HEAD_MATERIAL) {
 			String command = configManager.getSeeInventoryCommand();
-			executeCommand(e.getWhoClicked(), command, targetPlayerName);
+			executeCommand(player, command, targetPlayerName);
 		}
 	}
 	
-	private void executeCommand(HumanEntity player, String command, String targetPlayerName) {
+	private void executeCommand(Player player, String command, String targetPlayerName) {
 		command = command.replace("{PLAYER}", targetPlayerName);
 		Bukkit.dispatchCommand(player, command);
+	}
+	
+	private boolean areInventoriesEqual(Player player, Player targetPlayer) {
+		Inventory playerInventory = player.getInventory();
+		Inventory targetPlayerInventory = targetPlayer.getInventory();
+		
+		List<ItemStack> inventoryContents = Arrays.asList(playerInventory.getContents());
+		
+		for (ItemStack item : targetPlayerInventory.getContents()) {
+			int index = findItemInInventory(inventoryContents, item);
+			if (index != -1) {
+				inventoryContents.remove(findItemInInventory(inventoryContents, item));
+			}
+		}
+		
+		return inventoryContents.isEmpty();
+	}
+	
+	private int findItemInInventory(List<ItemStack> inventoryContents, ItemStack item) {
+		for (int i = 0; i < inventoryContents.size(); i++) {
+			if (areSameItens(inventoryContents.get(i), item)) {
+				return i;
+			}
+		}
+		
+		return -1;
+	}
+	
+	private boolean areSameItens(ItemStack item1, ItemStack item2) {		
+		return (item1 == null && item2 == null) || (item1.getType() == item2.getType() && item1.getAmount() == item2.getAmount() && 
+				haveSameEnchantments(item1, item2));
+	}
+	
+	private boolean haveSameEnchantments(ItemStack item1, ItemStack item2) {
+		Map<Enchantment, Integer> enchantments1 = item1.getEnchantments();
+		Map<Enchantment, Integer> enchantments2 = item2.getEnchantments();
+		if (enchantments1.size() != enchantments2.size()) {
+			return false;
+		}
+		
+		for (Enchantment enchantment : enchantments1.keySet()) {
+			if (!item2.containsEnchantment(enchantment) || 
+					item1.getEnchantmentLevel(enchantment) != item2.getEnchantmentLevel(enchantment)) {
+				return false;
+			}
+		}
+		
+		return true;
 	}
 
 }
