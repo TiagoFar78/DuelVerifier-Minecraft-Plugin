@@ -1,0 +1,10 @@
+Menus:
+  DuelVerifier:
+    Name: "&8Check oponnet inventory : &e"
+    Sword:
+      Name: "&eStart duel"
+    Head:
+      Name: "&eSee inventory"
+Commands:
+  StartDuel: "x1 desafiar {PLAYER}"
+  SeeInventory: "invsee {PLAYER}"
