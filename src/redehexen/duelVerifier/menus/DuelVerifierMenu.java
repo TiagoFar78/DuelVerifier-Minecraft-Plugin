@@ -15,6 +15,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 
@@ -130,8 +131,8 @@ public class DuelVerifierMenu implements Listener {
 	}
 	
 	private boolean areInventoriesEqual(Player player, Player targetPlayer) {
-		Inventory playerInventory = player.getInventory();
-		Inventory targetPlayerInventory = targetPlayer.getInventory();
+		PlayerInventory playerInventory = player.getInventory();
+		PlayerInventory targetPlayerInventory = targetPlayer.getInventory();
 		
 		List<ItemStack> inventoryContents = buildInventoryContentsList(playerInventory.getContents());
 		
@@ -142,7 +143,11 @@ public class DuelVerifierMenu implements Listener {
 			}
 		}
 		
-		return inventoryContents.isEmpty();
+		return inventoryContents.isEmpty() && 
+				areSameItens(playerInventory.getHelmet(), targetPlayerInventory.getHelmet()) &&
+				areSameItens(playerInventory.getChestplate(), targetPlayerInventory.getChestplate()) &&
+				areSameItens(playerInventory.getLeggings(), targetPlayerInventory.getLeggings()) &&
+				areSameItens(playerInventory.getBoots(), targetPlayerInventory.getBoots());
 	}
 	
 	private int findItemInInventory(List<ItemStack> inventoryContents, ItemStack item) {
