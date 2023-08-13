@@ -23,7 +23,7 @@ public class DuelVerifier extends JavaPlugin {
 		
 		getServer().getPluginManager().registerEvents(new DuelVerifierMenu(), this);
 		
-		getCommand("KillOnDisconnect").setExecutor(new DuelVerifierCommand());
+		getCommand("desafiar").setExecutor(new DuelVerifierCommand());
 	}
 	
 	public static YamlConfiguration getYamlConfiguration() {

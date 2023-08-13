@@ -1,0 +1,7 @@
+name: TF_DuelVerifier
+version: 1.0
+author: TiagoFar78
+main: redehexen.duelVerifier.DuelVerifier
+commands:
+  desafiar:
+  
