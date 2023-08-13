@@ -1,0 +1,9 @@
+Verificação de X1:
+- O plugin irá verificar se o inventário dos 2 players estão ABSOLUTAMENTE IGUAIS antes de um player iniciar x1 com outro, esse plugin irá criar um gui na tela
+do usuário após ele digitar /desafiar (nick), terão 2 opções neste menu, uma espada que quando for clicada irá executar o comando /x1 desafiar (nick recebido no
+comando /desafiar) e uma cabeça com o nome do player desafiado onde ao clicar irá executar o comando /invsee (nick recebido no comando /desafiar), caso o player
+clique na espada e o inventáio de um dos lutadores não esteja igual, o plugin irá enviar uma mensagem dizendo "(nick) Não está com os mesmos itens que seu oponente"
+
+"/x1 desafiar (nick)" este é um comando de outro plugin, a única função do plugin de desafio é executar o comando de x1 caso os inventários estejam parelhos.
+"/invsee (nick)" este é o comando de um plugin de inventário, a única função do plugin de desafio é executar este comando para o desafiante verificar o inventário
+de seu oponente"
